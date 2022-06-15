@@ -7,7 +7,7 @@ import { RenderConditional } from '../'
 import { BackgroundGradient,ContainerIcon,ContainerBottomTab, Button } from './styles';
 
 const BottomTab = ({ type, color, size = 24, isFocused, index }) => {
-    const icon = index == 0 ? 'home' : 'chart-bar';
+    const icon = index == 0 ? 'bolt' : 'chart-bar';
     const gradient = index == 1;
 
     return (

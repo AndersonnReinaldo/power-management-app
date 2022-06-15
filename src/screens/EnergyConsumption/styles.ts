@@ -1,6 +1,5 @@
 import styled from "styled-components/native";
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-import { normalize } from '../../utils'
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -26,7 +25,7 @@ export const Card = styled.View.attrs({
 `
 
 export const Title = styled.Text`
-    font-size:${normalize(20)}px;
+    font-size:25px;
     color: ${ props => props.theme.fontOne};
 
 `
