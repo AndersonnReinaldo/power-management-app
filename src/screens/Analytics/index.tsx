@@ -1,60 +1,86 @@
-import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Modalize } from 'react-native-modalize';
 
-export default function App(){
-  const modalizeRef = useRef(null);
+import React, { useEffect, useState } from "react";
+import { FlatList } from 'react-native';
+import { VictoryPie, VictoryTooltip } from 'victory-native';
 
-  const onOpen = () => {
-    modalizeRef.current?.open();
-  };
-  return(
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onOpen}>
-        <Text>ABRIR</Text>
-      </TouchableOpacity>
+import { expenses } from '../../utils';
 
-      <Modalize 
-      ref={modalizeRef}
-      snapPoint={180}
-      modalHeight={180} //500
-      HeaderComponent={
-        <View style={{borderTopLeftRadius: 10, borderTopRightRadius: 10, width: '100%', height: 50, backgroundColor: '#121212'}}>
-          <Text style={{textAlign: 'center', color: '#FFF', fontSize: 25}}>BEM VINDO</Text>
-        </View>
-      }
-      >
-        <View 
-        style={{
-          flex:1, 
-          height: 180, 
-          flexDirection: 'row', 
-          justifyContent: 'space-around', 
-          alignItems: 'center'
+import { Card, CardProps } from '../../components/Card';
+import { Header, MonthsProps } from '../../components/Header';
+
+import { Container, Chart } from './styles';
+
+const Analytics = () => {
+  const [selected, setSelected] = useState("");
+  const [month, setMonth] = useState<MonthsProps>(expenses[0]);
+  const [data, setData] = useState<CardProps[]>([]);
+
+  function handleCardOnPress(id: string) {
+    setSelected(prev => prev === id ? "" : id);
+  }
+
+
+  useEffect(() => {
+    setData(expenses[month]);
+  }, [month]);
+
+  return (
+    <Container>
+      <Header
+        onValueChange={setMonth}
+        selectedValue={month}
+      />
+
+      <Chart>
+        <VictoryPie
+          data={data}
+          x="label"
+          y="value"
+          colorScale={data.map(expense => expense.color)}
+          innerRadius={80}
+          padAngle={3}
+          animate={{
+            easing: "bounce"
           }}
-        >
-          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#29ae19'} ]}>
-            <Text style={{ color: '#FFF', fontWeight: 'bold'}}>EDITAR </Text>
-          </TouchableOpacity> 
-          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#FF0000'} ]}>
-          <Text style={{ color: '#FFF', fontWeight: 'bold'}}>EXCLUIR </Text>
-          </TouchableOpacity> 
-        </View>
-      </Modalize>
-    </View>
+          style={{
+            labels: {
+              fill: '#FFF'
+            },
+            data: {
+              fillOpacity: ({ datum }) => (datum.id === selected || selected === "") ? 1 : 0.3,
+              stroke: ({ datum }) => datum.id === selected ? datum.color : 'none',
+              strokeOpacity: 0.5,
+              strokeWidth: 10
+            }
+          }}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              flyoutStyle={{
+                stroke: 0,
+                fill: ({ datum }) => datum.color
+              }}
+
+            />
+          }
+        />
+      </Chart>
+
+      <FlatList
+        data={expenses[month]}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Card
+            data={item}
+            selected={false}
+            onPress={() => handleCardOnPress(item.id)}
+          />
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttons:{
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    borderRadius: 7,
-  }
-})
+
+export default Analytics
