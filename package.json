@@ -4,14 +4,30 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "clear": "adb uninstall 'com.powermanagement' && npx react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "dev": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-picker/picker": "^2.4.1",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native-stack": "^6.6.2",
+    "axios": "^0.27.2",
     "react": "17.0.2",
-    "react-native": "0.68.2"
+    "react-native": "0.68.2",
+    "react-native-gesture-handler": "^2.4.2",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-modalize": "^2.0.13",
+    "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.13.1",
+    "react-native-status-bar-height": "^2.6.0",
+    "react-native-svg": "^12.3.0",
+    "react-native-vector-icons": "^9.1.0",
+    "styled-components": "^5.3.5",
+    "victory-native": "^36.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -20,6 +36,7 @@
     "@types/jest": "^26.0.23",
     "@types/react-native": "^0.67.3",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "babel-jest": "^26.6.3",
