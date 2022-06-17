@@ -4,13 +4,19 @@ import { FlatList } from 'react-native';
 import { VictoryPie, VictoryTooltip } from 'victory-native';
 
 import { expenses } from '../../utils';
-import { Card,CardProps,Header,MonthsProps,ReferenceProps,ContentFilter } from './components'
+
+import { Card,CardProps,Header,MonthsProps,IReferenceProps,ContentFilter } from './components'
 import { Container, Chart, ModalFilter } from './styles';
+import { api } from '../../services/api'
 
 const Analytics = () => {
+  const date = new Date();
   const [selected, setSelected] = useState("");
-  const [year, setYear] = useState<MonthsProps>('2022');
-  const [reference, setReference] = useState<ReferenceProps>('KV/H');
+  const [year, setYear] = useState<MonthsProps>(date.getFullYear());
+  const [reference, setReference] = useState<IReferenceProps>({
+    label:'KV/H',
+    value:2
+  });
   const [data, setData] = useState<CardProps[]>([]);
 
   const modalizeRef = useRef(null);
@@ -27,8 +33,23 @@ const Analytics = () => {
   }
 
   useEffect(() => {
-    setData(expenses[year]);
+    init()
   }, [year, reference]);
+
+  const init = async() => {
+    const attrs = {
+        identifier : reference.value,
+        year
+    }
+
+    api.post('findConsumptionYear',attrs)
+    .then(res => {
+      const { dataGrafic } = res.data;
+      setData(dataGrafic)
+    })
+    .catch(err => console.error(err.response.message))
+  }
+
 
   return (
     <Container>
@@ -39,7 +60,7 @@ const Analytics = () => {
         snapPoint={400}
         modalHeight={500}>
           <ContentFilter 
-            onSetReference={(value) =>  setReference(value)}
+            onSetReference={setReference}
             onSetYear={(value) =>  setYear(value)}
             onCloseFilter={onCloseFilter} />
       </ModalFilter>
@@ -79,7 +100,7 @@ const Analytics = () => {
       </Chart>
 
       <FlatList
-        data={expenses[year]}
+        data={data}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <Card

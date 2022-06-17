@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacityProps } from 'react-native';
+import { Alert, TouchableOpacityProps } from 'react-native';
 import { Container, Tag, Title, Amount } from './styles';
 
 export type CardProps = {
@@ -23,7 +23,7 @@ export function Card({ data, selected, ...rest }: Props) {
       <Title>
         {data.label}
       </Title>
-
+      
       <Amount>
         {`${data.unidade} ${data.value.toLocaleString('pt-BR', {
             style: 'currency',
