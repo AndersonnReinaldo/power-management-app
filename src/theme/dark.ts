@@ -5,5 +5,8 @@ export default {
     fontOne:'#EEF5DB',
     fontTwo:'#B8D8D8',
     fontThree:'#4F6367',
-    success:'green'
+    success:'#1BC6B4',
+    info:"#3519e6",
+    alert:'#f9ff00',
+    error:'#fa1d0b'
 }

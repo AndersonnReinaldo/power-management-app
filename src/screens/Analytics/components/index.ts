@@ -1,5 +1,5 @@
 import { Card,CardProps } from './Card'
-import { Header,MonthsProps,ReferenceProps } from './Header'
+import { Header,MonthsProps,ReferenceProps,IReferenceProps } from './Header'
 import ContentFilter from './ContentFilter'
 export {
   Card,
@@ -10,5 +10,6 @@ export {
 export type {
     CardProps,
     MonthsProps,
-    ReferenceProps
+    ReferenceProps,
+    IReferenceProps
 }

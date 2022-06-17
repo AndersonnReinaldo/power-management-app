@@ -13,9 +13,9 @@ import { AppIcon as Icon,TIcons } from '../'
 type TPropsPickerSelect = {
     data: Array<any>;
     placeholder:string;
-    defaultValue:string | number;
     libIcon: TIcons;
     nameIcon:string;
+    colorIcon:string;
     onSetValue:(value) => void
   }
 
@@ -34,10 +34,10 @@ type TPropsPickerSelect = {
   
 const PickerSelect: React.FC<TPropsPickerSelect> = ({
   data,
-  defaultValue,
   placeholder,
   libIcon,
   nameIcon,
+  colorIcon,
   onSetValue
 }): JSX.Element => {
   const [valueSelected, setValueSelected] = useState<any>('')
@@ -56,7 +56,7 @@ const PickerSelect: React.FC<TPropsPickerSelect> = ({
     <>
       <PickerSelectContainer onPress={handleOpenOptions}>
         <TextPickerSelect>{valueSelected ? valueSelected.label : placeholder}</TextPickerSelect>
-        <Icon color='red' name={nameIcon} type={libIcon} />
+        <Icon color={colorIcon} name={nameIcon} type={libIcon} />
       </PickerSelectContainer>
       <Options 
         data={data}

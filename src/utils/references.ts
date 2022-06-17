@@ -1,6 +1,6 @@
 const REFERENCES = [
-    {id:'1', label:'R$', value:'R$'},
-    {id:'2', label:'KV/H', value:'KV/H'},
+    {id:'1', label:'R$', value:'1'},
+    {id:'2', label:'KW/H', value:'2'},
 ]
 
 export default REFERENCES

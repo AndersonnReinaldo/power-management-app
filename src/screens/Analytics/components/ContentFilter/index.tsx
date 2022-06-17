@@ -1,14 +1,12 @@
 import React,{useState} from 'react';
 import {months, references} from '../../../../utils';
 import {PickerSelect} from '../../../../components';
+import { IReferenceProps } from '../'
 import {Container, Box, ButtonFilter, LabelButton} from './styles';
+
 export type YearsProps = string;
 export type ReferenceProps = 'R$' | 'KV/H' | any;
 
-type Tvalues = {
-  month: YearsProps;
-  reference: ReferenceProps;
-};
 
 type TProps = {
   onSetYear: (year: YearsProps) => void;
@@ -22,13 +20,16 @@ const ContentFilter: React.FC<TProps> = ({
   onCloseFilter
 }): JSX.Element => {
   const [year, setYear] = useState<YearsProps>('');
-  const [reference, setReference] = useState<ReferenceProps>('');
+  const [reference, setReference] = useState<IReferenceProps>();
 
   function setValues(){
     if(!year || !reference) return
 
     onSetYear(year)
-    onSetReference(reference)
+    onSetReference({
+      label:reference.label,
+      value:reference.value
+    })
     onCloseFilter()
   }
 
@@ -40,7 +41,7 @@ const ContentFilter: React.FC<TProps> = ({
           placeholder="Selecione o ano"
           libIcon="FontAwesome5"
           nameIcon="calendar"
-          defaultValue="1"
+          colorIcon="#3519e6"
           onSetValue={option => setYear(option.value)}
         />
         <PickerSelect
@@ -48,8 +49,8 @@ const ContentFilter: React.FC<TProps> = ({
           placeholder="Selecione a referencia"
           libIcon="FontAwesome5"
           nameIcon="eye"
-          defaultValue="1"
-          onSetValue={option => setReference(option.value)}
+          colorIcon="#f9ff00"
+          onSetValue={option => setReference(option)}
         />
       </Box>
       <Box flex={0.7}>
