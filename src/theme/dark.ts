@@ -4,5 +4,6 @@ export default {
     tertiary:'#100F10',
     fontOne:'#EEF5DB',
     fontTwo:'#B8D8D8',
-    fontThree:'#4F6367'
+    fontThree:'#4F6367',
+    success:'green'
 }

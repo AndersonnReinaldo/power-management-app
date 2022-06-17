@@ -33,11 +33,12 @@ export const Tag = styled.View<TagProps>`
 
 export const Title = styled.Text`
   flex: 1;
-
+  color: ${props => props.theme.fontOne};
   font-weight: bold;
   font-size: 16px;
 `;
 
 export const Amount = styled.Text`
   margin-right: 16px;
+  color: ${props => props.theme.fontOne};
 `;

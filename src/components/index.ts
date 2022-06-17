@@ -1,9 +1,15 @@
 import Tab from './Tab/'
-import AppIcon from './AppIcon/AppIcon'
 import RenderConditional from './RenderConditional'
+import AppIcon,{ TIcons } from './AppIcon/AppIcon'
+import PickerSelect from './PickerSelect'
 
 export {
     Tab,
     AppIcon,
-    RenderConditional
+    RenderConditional,
+    PickerSelect
+}
+
+export type {
+    TIcons
 }
