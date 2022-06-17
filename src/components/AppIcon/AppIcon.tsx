@@ -25,46 +25,57 @@ export const Icons = {
     Foundation: 'Foundation',
 }
 
-const AppIcon:React.FC<any> = (props):JSX.Element => {
+export type TIcons = 
+ 'MaterialCommunityIcons' |
+ 'MaterialIcons' |
+ 'Ionicons' |
+ 'Feather' |
+ 'FontAwesome5' |
+ 'FontAwesome' |
+ 'AntDesign' |
+ 'Entypo' |
+ 'SimpleLineIcons' |
+ 'Octicons' |
+ 'Foundation'
+
+interface IProps {
+    type:TIcons;
+    name:string;
+    size?:number | string;
+    color:string;
+    style?:any;
+}
+
+
+const AppIcon:React.FC<IProps> = (props):JSX.Element => {
+    const {color,name,type,size,style} = props
 
     const fontSize = 24;
-    return (
-        <>
-            {props.type === Icons.MaterialCommunityIcons &&
-                <MaterialCommunityIcons name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.Ionicons &&
-                <Ionicons name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.Feather &&
-                <Feather name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.FontAwesome5 &&
-                <FontAwesome5 name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.FontAwesome &&
-                <FontAwesome name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.AntDesign &&
-                <AntDesign name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.Entypo &&
-                <Entypo name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.MaterialIcons &&
-                <MaterialIcons name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.SimpleLineIcons &&
-                <SimpleLineIcons name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.Octicons &&
-                <Octicons name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-            {props.type === Icons.Foundation &&
-                <Foundation name={props.name} size={props.size || fontSize} color={props.color} style={props.style} />
-            }
-        </>
-    )
-}
+
+    switch(type) {
+        case Icons.MaterialCommunityIcons:
+            return <MaterialCommunityIcons name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.Ionicons:
+            return <Ionicons name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.FontAwesome5:
+            return <FontAwesome5 name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.FontAwesome:
+            return <FontAwesome name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.AntDesign:
+            return <AntDesign name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.Entypo:
+            return <Entypo name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.MaterialIcons:
+            return <MaterialIcons name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.SimpleLineIcons:
+            return <SimpleLineIcons name={name} size={size || fontSize} color={color} style={style} />
+        case Icons.Octicons:
+            return <Octicons name={name} size={size || fontSize} color={color} style={style} /> 
+        case Icons.Foundation:
+            return <Foundation name={name} size={size || fontSize} color={color} style={style} />     
+        default:
+            return <MaterialCommunityIcons name='home' size={fontSize} color='#FFFFF'/> 
+    }
+    }
 
 export default AppIcon

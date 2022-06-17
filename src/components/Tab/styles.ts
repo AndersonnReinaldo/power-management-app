@@ -3,6 +3,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import colors from '../../constants/Colors';
 
 export const BackgroundGradient = styled(LinearGradient).attrs({
+    
   colors: [colors.light, colors.dark],
   shadowColor: 'black',
   shadowOffset: { width: 2, height: 2 },
@@ -23,7 +24,7 @@ export const ContainerIcon = styled.View`
 
 export const ContainerBottomTab = styled.View`
     height: 60px;
-    background-color: ${ props => props.theme.background};
+    background-color: ${ props => props.theme.secundary};
     align-items: center;
     flex-direction: row;
     justify-content: space-around;
