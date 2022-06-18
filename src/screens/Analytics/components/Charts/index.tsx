@@ -50,13 +50,7 @@ export const ChartBar: React.FC<TChartProps> = ({data,selected}):JSX.Element => 
       <VictoryChart 
       theme={VictoryTheme.material}
       domainPadding={10}
-      animate={{ duration: 1000,onLoad: { duration: 1000 }}}
-      style={{
-        parent:{
-          appearance:'red'
-        }
-      }}
-      >
+      animate={{ duration: 800,onLoad: { duration: 800 }}}>
         <VictoryBar
               style={{
                 labels: {
