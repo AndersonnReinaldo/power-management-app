@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 
-
 export const Container = styled.View`
   width: 100%;
   flex-direction: row;
@@ -33,3 +32,15 @@ export const ButtonFilter = styled.TouchableOpacity.attrs({
  justify-content: center;
  align-items: center;
 `
+export const ButtonChart = styled.TouchableOpacity.attrs({
+  activeOpacity:0.9
+})`
+ flex:1;
+ justify-content: center;
+ align-items: center;
+`
+
+export const LoaderFilter =  styled.ActivityIndicator.attrs({
+  size:40,
+  color: '#1BC6B4'
+})``

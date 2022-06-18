@@ -9,10 +9,7 @@ export const Container = styled.View`
 `;
 
 export const Chart = styled.View`
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  align-items: center;
 `;
 
 export const ModalFilter = styled(Modalize)`

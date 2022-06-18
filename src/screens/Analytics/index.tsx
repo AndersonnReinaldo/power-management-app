@@ -1,13 +1,19 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { FlatList } from 'react-native';
-import { VictoryPie, VictoryTooltip } from 'victory-native';
-
-import { expenses } from '../../utils';
-
-import { Card,CardProps,Header,MonthsProps,IReferenceProps,ContentFilter } from './components'
+import { 
+    Card,
+    CardProps,
+    Header,
+    MonthsProps,
+    IReferenceProps,
+    ContentFilter,
+    ChartPie,
+    ChartBar
+} from './components'
 import { Container, Chart, ModalFilter } from './styles';
 import { api } from '../../services/api'
+import { expenses } from '../../utils';
+import { RenderConditional } from "../../components";
 
 const Analytics = () => {
   const date = new Date();
@@ -18,6 +24,8 @@ const Analytics = () => {
     value:2
   });
   const [data, setData] = useState<CardProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [chartType, setChartType] = useState<number>(2);
 
   const modalizeRef = useRef(null);
 
@@ -28,6 +36,7 @@ const Analytics = () => {
   const onCloseFilter = () => {
     modalizeRef.current?.close();
   };
+
   function handleCardOnPress(id: string) {
     setSelected(prev => prev === id ? "" : id);
   }
@@ -37,6 +46,7 @@ const Analytics = () => {
   }, [year, reference]);
 
   const init = async() => {
+    setLoading(true)
     const attrs = {
         identifier : reference.value,
         year
@@ -48,72 +58,56 @@ const Analytics = () => {
       setData(dataGrafic)
     })
     .catch(err => console.error(err.response.message))
+    .finally(() => setLoading(false))
   }
 
+  function renderChartType(){
+
+      if(chartType === 1){
+        setChartType(2)
+      }else if(chartType == 2){
+        setChartType(1)
+      }
+  }
+
+  const renderItem = ({ item }) => (
+    <Card
+      data={item}
+      selected={false}
+      onPress={() => handleCardOnPress(item.id)}
+    />
+  )
 
   return (
     <Container>
-      <Header values={{year,reference}} onChangeFilter={onOpenFilter}/>
+      <Header values={{year,reference,loading,chartType}} onChangeFilter={onOpenFilter} onChangeChart={renderChartType}/>
 
-      <ModalFilter 
-        ref={modalizeRef}
-        snapPoint={400}
-        modalHeight={500}>
+      <ModalFilter ref={modalizeRef} snapPoint={400} modalHeight={500}>
           <ContentFilter 
             onSetReference={setReference}
             onSetYear={(value) =>  setYear(value)}
-            onCloseFilter={onCloseFilter} />
+            onCloseFilter={onCloseFilter} 
+          />
       </ModalFilter>
 
       <Chart>
-        <VictoryPie
-          data={data}
-          x="label"
-          y="value"
-          colorScale={data.map(expense => expense.color)}
-          innerRadius={80}
-          padAngle={3}
-          animate={{
-            easing: "bounce"
-          }}
-          style={{
-            labels: {
-              fill: '#FFF'
-            },
-            data: {
-              fillOpacity: ({ datum }) => (datum.id === selected || selected === "") ? 1 : 0.3,
-              stroke: ({ datum }) => datum.id === selected ? datum.color : 'none',
-              strokeOpacity: 0.5,
-              strokeWidth: 10
-            }
-          }}
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              flyoutStyle={{
-                stroke: 0,
-                fill: ({ datum }) => datum.color
-              }}
-            />
-          }
-        />
+        <RenderConditional isTrue={ chartType == 1 }>
+          <ChartPie data={data} selected={selected}/>
+        </RenderConditional>
+        <RenderConditional isTrue={ chartType == 2 }>
+          <ChartBar data={data} selected={selected}/>
+        </RenderConditional>
       </Chart>
 
       <FlatList
         data={data}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <Card
-            data={item}
-            selected={false}
-            onPress={() => handleCardOnPress(item.id)}
-          />
-        )}
+        renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
     </Container>
   );
 }
 
-
 export default Analytics
+
