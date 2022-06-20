@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated,Easing } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
+import io,{Socket} from 'socket.io-client';
 import { Container,Header,HeaderFooter,Footer,FooterFooter,Title } from './styles'
 
 import CircularProgress from "../../components/CircularProgress/CircularProgress";
@@ -13,8 +14,13 @@ const Home:React.FC = (): JSX.Element => {
   const heigthFooterAnimated = useRef(new Animated.Value(0)).current
   const opacityHeaderAnimated = useRef(new Animated.Value(0)).current
   const isScreenIsFocused = useIsFocused()
-
+  let socket:Socket;
+  
   useEffect(() => {
+    socket = io('http://192.168.5.110:3740');
+    socket.on('sendMessage', (data) => {
+      setCurrentConsumption(data)
+    })
 
     if(isScreenIsFocused){
       onAnimationFooter(1,1)
