@@ -1,18 +1,25 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Animated,Easing } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { Container,Header,HeaderFooter,Footer,FooterFooter,Title } from './styles'
-
+import { io,Socket } from 'socket.io-client'
 import CircularProgress from "../../components/CircularProgress/CircularProgress";
 
 
 const EnergyConsumption:React.FC = (): JSX.Element => {
+  const [currentConsumption, setCurrentConsumption] = useState(0)
 
   const heigthFooterAnimated = useRef(new Animated.Value(0)).current
   const opacityHeaderAnimated = useRef(new Animated.Value(0)).current
   const isScreenIsFocused = useIsFocused()
+  let socket:Socket;
 
   useEffect(() => {
+
+    socket = io('http://192.168.5.110:3740');
+    socket.on('energyPanel', (data) => {
+      setCurrentConsumption(data)
+    })
 
     if(isScreenIsFocused){
       onAnimationFooter(1,1)
@@ -59,7 +66,7 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
       <Footer style={{maxHeight:maxHeightFooter}}>
         <HeaderFooter style={{opacity:opacityHeader}}>
         <Title size={14}>Valor estipulado para o mes</Title>
-          <Title bold={true} size={35}>KW 12,000</Title>
+          <Title bold={true} size={35}>KW {currentConsumption}</Title>
           <Title color='red' size={16}></Title> 
         </HeaderFooter>
         <FooterFooter>

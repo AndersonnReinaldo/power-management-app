@@ -3,6 +3,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useEffect,useState } from 'react';
 import { useColorScheme, StatusBar,LogBox } from 'react-native'
 import { ThemeProvider } from 'styled-components';
+import io,{Socket} from 'socket.io-client';
 import Routes from './routes';
 import themes from './theme';
 

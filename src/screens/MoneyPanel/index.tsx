@@ -7,8 +7,8 @@ import { Container,Header,HeaderFooter,Footer,FooterFooter,Title } from './style
 import CircularProgress from "../../components/CircularProgress/CircularProgress";
 
 
-const Home:React.FC = (): JSX.Element => {
-  const [currentConsumption, setCurrentConsumption] = useState(120)
+const MoneyPanel:React.FC = (): JSX.Element => {
+  const [currentConsumption, setCurrentConsumption] = useState(0)
   const [stipulatedConsumption, setStipulatedConsumption] = useState(150)
   const porcent = (currentConsumption / stipulatedConsumption) / 100
   const heigthFooterAnimated = useRef(new Animated.Value(0)).current
@@ -18,7 +18,7 @@ const Home:React.FC = (): JSX.Element => {
   
   useEffect(() => {
     socket = io('http://192.168.5.110:3740');
-    socket.on('sendMessage', (data) => {
+    socket.on('moneyPanel', (data) => {
       setCurrentConsumption(data)
     })
 
@@ -78,4 +78,4 @@ const Home:React.FC = (): JSX.Element => {
   )
 }
 
-export default Home
+export default MoneyPanel

@@ -14,7 +14,6 @@ const ProgressUse:React.FC<TPropsProgress> = ({value = 0, max= 100, color= '#339
   const porcent:string = `${parseInt(String((value / max) * 100))}%`
   const percent:number = parseInt(String((value / max) * 100)); 
  
-  console.log(percent)
   return (
     <ProgressCircle
         percent={percent}

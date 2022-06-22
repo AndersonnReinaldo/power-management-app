@@ -1,9 +1,9 @@
-import Home from "./Home";
+import MoneyPanel from "./MoneyPanel";
 import Analytics from "./Analytics";
 import EnergyConsumption from "./EnergyConsumption";
 
 export {
-    Home,
+    MoneyPanel,
     Analytics,
     EnergyConsumption
 }
