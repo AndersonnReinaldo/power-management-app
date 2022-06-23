@@ -17,7 +17,7 @@ const MoneyPanel:React.FC = (): JSX.Element => {
   let socket:Socket;
   
   useEffect(() => {
-    socket = io('http://192.168.5.110:3740');
+    socket = io('http://192.168.5.110:3740').emit('auth', {userName:'Anderson', userId:'1'});
     socket.on('moneyPanel', (data) => {
       setCurrentConsumption(data)
     })

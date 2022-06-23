@@ -16,7 +16,8 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
 
   useEffect(() => {
 
-    socket = io('http://192.168.5.110:3740');
+    
+    socket = io('http://192.168.5.110:3740').emit('auth', {userName:'Anderson', userId:'1'});
     socket.on('energyPanel', (data) => {
       setCurrentConsumption(data)
     })
