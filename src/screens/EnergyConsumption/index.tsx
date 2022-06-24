@@ -1,34 +1,56 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated,Easing } from 'react-native'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { Animated,Easing,Keyboard } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { Container,Header,HeaderFooter,Footer,FooterFooter,Title } from './styles'
-import { io,Socket } from 'socket.io-client'
+import { 
+  Container,
+  Header,
+  HeaderFooter,
+  Footer,
+  FooterFooter,
+  Title,
+  ContainerInput,
+  BoxInput,
+  InputStipulatedValue,
+ } from './styles'
+
 import CircularProgress from "../../components/CircularProgress/CircularProgress";
+import { EnergyContext } from '../../context/EnergyProvider'
+import { RenderConditional } from '../../components'
 
 
 const EnergyConsumption:React.FC = (): JSX.Element => {
-  const [currentConsumption, setCurrentConsumption] = useState(0)
+  const { currentEnergyConsumption } = useContext(EnergyContext)
+
+  const [stipulatedConsumption, setStipulatedConsumption] = useState(150)
+  const [inputStipulatedConsumption, setInputStipulatedConsumption] = useState(stipulatedConsumption)
+  const [keyboardStatus, setKeyboardStatus] =  useState<boolean>(false)
 
   const heigthFooterAnimated = useRef(new Animated.Value(0)).current
   const opacityHeaderAnimated = useRef(new Animated.Value(0)).current
   const isScreenIsFocused = useIsFocused()
-  let socket:Socket;
 
   useEffect(() => {
 
-    
-    socket = io('http://192.168.5.110:3740').emit('auth', {userName:'Anderson', userId:'1'});
-    socket.on('energyPanel', (data) => {
-      setCurrentConsumption(data)
-    })
-
-    if(isScreenIsFocused){
-      onAnimationFooter(1,1)
-    }else {
-      onAnimationFooter(0,0)
+    if(stipulatedConsumption !== inputStipulatedConsumption){
+      setInputStipulatedConsumption(stipulatedConsumption)
     }
+  
+  if(isScreenIsFocused){
+    onAnimationFooter(1,1)
+  }else {
+    onAnimationFooter(0,0)
+  }
 
-  },[isScreenIsFocused])
+  const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    setKeyboardStatus(!keyboardStatus);
+  });
+
+  return () => {
+    hideSubscription.remove();
+  }
+
+},[isScreenIsFocused, keyboardStatus])
+
 
   function onAnimationFooter(valueHeightFooter: number, valueOpacityHeader: number){
 
@@ -45,7 +67,12 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
         useNativeDriver:false
       })
     ]).start()
-  }  
+  }
+  
+  async function onUpdateMaxConsumption(event) {
+    if(!event.nativeEvent.text) return
+    setStipulatedConsumption(event.nativeEvent.text)
+  }
   
   const maxHeightFooter = heigthFooterAnimated.interpolate({ 
     inputRange: [0, 1], 
@@ -62,16 +89,28 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
     <Container>
       <Header style={{opacity:opacityHeader}}>
         <Title size={22}>Consumo atual</Title>
-        <Title bold={true} size={40}>KW/H 12,800</Title>
+        <Title bold={true} size={40}>KW/H {currentEnergyConsumption}</Title>
       </Header>
       <Footer style={{maxHeight:maxHeightFooter}}>
         <HeaderFooter style={{opacity:opacityHeader}}>
-        <Title size={14}>Valor estipulado para o mes</Title>
-          <Title bold={true} size={35}>KW {currentConsumption}</Title>
-          <Title color='red' size={16}></Title> 
+        <ContainerInput>
+          <Title size={14}>Valor estipulado para o mes</Title>
+          <BoxInput>
+            <Title bold={true} size={35}>KW</Title>
+            <InputStipulatedValue
+              onSubmitEditing={(event) => onUpdateMaxConsumption(event)}
+              bold={true} size={35} 
+              value={inputStipulatedConsumption.toString()}
+              onChangeText={(value) => setInputStipulatedConsumption(value?.replace(/[^\w\s]/gi, ''))}
+              />
+          </BoxInput>
+          <RenderConditional isTrue={currentEnergyConsumption > stipulatedConsumption}>
+              <Title color='red' size={16}>Voce ultrapassou o valor meta</Title> 
+          </RenderConditional>
+        </ContainerInput>
         </HeaderFooter>
         <FooterFooter>
-          <CircularProgress value={10} max={100}/>
+          <CircularProgress value={currentEnergyConsumption} max={stipulatedConsumption}/>
         </FooterFooter>
       </Footer>
     </Container>

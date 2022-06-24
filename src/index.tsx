@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import React, { useEffect,useState } from 'react';
+import React from 'react';
 import { useColorScheme, StatusBar,LogBox } from 'react-native'
 import { ThemeProvider } from 'styled-components';
-import io,{Socket} from 'socket.io-client';
 import Routes from './routes';
 import themes from './theme';
+import EnergyProvider from './context/EnergyProvider'
 
 import ignoreWarnings from 'ignore-warnings';
 ignoreWarnings('warn',['ViewPropTypes','[react-native-gesture-handler]'])
@@ -24,10 +24,12 @@ const Index = () => {
     
     return(
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeProvider theme={theme}>
-                <StatusBar backgroundColor={theme.background}/>
-                <Routes/>
-            </ThemeProvider>
+            <EnergyProvider>
+                <ThemeProvider theme={theme}>
+                    <StatusBar backgroundColor={theme.background}/>
+                    <Routes/>
+                </ThemeProvider>
+            </EnergyProvider>
         </GestureHandlerRootView>
     ) 
 }

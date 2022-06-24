@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { Animated } from 'react-native'
 import { normalize } from '../../utils'
+import Colors from "../../constants/Colors";
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -33,8 +34,7 @@ export const Footer = styled(Animated.View).attrs({
     align-items: center;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
-    elevation: 8;
-    
+    elevation: 8; 
 `
 
 export const FooterFooter = styled(Animated.View)`
@@ -48,4 +48,24 @@ export const Title = styled.Text`
     font-weight: ${ ({bold})  =>  bold ? 'bold' : 200};
     color: ${ ({theme, color}) => color ? color : theme.fontOne };
 
+`
+
+export const ContainerInput = styled.View`
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+export const BoxInput =  styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+`
+export const InputStipulatedValue = styled.TextInput.attrs({ 
+    keyboardType:"number-pad",
+    selectionColor : Colors.dark
+})`
+    font-size:${ ({size})  =>  size ? normalize(size) : normalize(50)}px;
+    font-weight: ${ ({bold})  =>  bold ? 'bold' : 200};
+    color: ${ ({theme, color}) => color ? color : theme.fontOne };
 `
