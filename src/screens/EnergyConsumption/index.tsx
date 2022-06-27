@@ -51,7 +51,6 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
 
 },[isScreenIsFocused, keyboardStatus])
 
-
   function onAnimationFooter(valueHeightFooter: number, valueOpacityHeader: number){
 
     Animated.parallel([

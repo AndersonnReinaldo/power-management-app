@@ -16,7 +16,13 @@ const EnergyProvider: FC<React.ReactNode> = ({ children }) => {
 let socket:Socket
 
   useEffect(() => {
-    socket = io('http://192.168.5.110:3740').emit('auth', {userName:'Anderson', idClient:'62b66e4393b9143bd73ed9ad'});
+    socket = io('https://power-management-api.herokuapp.com').emit('auth', {userName:'Anderson', idClient:'62b66e4393b9143bd73ed9ad'});
+
+    socket.on('auth', (data) => {
+      const { consumptionKwMonth,consumptionMoneyMonth } = data; 
+      setCurrentEnergyConsumption(consumptionKwMonth);
+      setCurrentMoneyConsumption(consumptionMoneyMonth)
+    })
 
     socket.on('energyPanel', (data) => {
       setCurrentEnergyConsumption(data)
