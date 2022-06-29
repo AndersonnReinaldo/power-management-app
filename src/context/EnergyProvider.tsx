@@ -4,14 +4,21 @@ export interface ContextTypeProps {
   currentEnergyConsumption:string | number | any;
   currentMoneyConsumption:string | number | any;
   socket:Socket;
+  isLogged:boolean;
+  client:any;
+  setClient:any;
 
 }
 
 export const EnergyContext = createContext<ContextTypeProps | null>(null);
 
 const EnergyProvider: FC<React.ReactNode> = ({ children }) => {
+  const [client, setClient] = useState(null)
   const [currentEnergyConsumption, setCurrentEnergyConsumption] = useState(0)
   const [currentMoneyConsumption, setCurrentMoneyConsumption] = useState(0)
+
+
+  const isLogged = !!client;
 
 let socket:Socket
 
@@ -38,7 +45,10 @@ let socket:Socket
   const Values:ContextTypeProps = {
     currentEnergyConsumption,
     currentMoneyConsumption,
-    socket
+    socket,
+    isLogged,
+    client,
+    setClient
   }
 
 
