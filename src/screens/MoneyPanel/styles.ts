@@ -18,7 +18,7 @@ export const Header = styled(Animated.View)`
 `
 
 export const HeaderFooter = styled(Animated.View)`
-    flex: 1;
+    flex:1.5;
     justify-content: center;
     align-items: center;
 `
@@ -34,12 +34,11 @@ export const Footer = styled(Animated.View).attrs({
     align-items: center;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
-    elevation: 8;
-    
+    elevation: 8; 
 `
 
 export const FooterFooter = styled(Animated.View)`
-    flex: 2;
+    flex: 3;
     justify-content: center;
     align-items: center;
 `

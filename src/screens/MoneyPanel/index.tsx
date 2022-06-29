@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import { Animated,Easing,Keyboard } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { 
@@ -14,42 +14,42 @@ import {
  } from './styles'
 
 import CircularProgress from "../../components/CircularProgress/CircularProgress";
-import { EnergyContext } from '../../context/EnergyProvider'
-import { RenderConditional } from '../../components'
+import { EnergyContext } from '../../context/EnergyProvider';
+import { RenderConditional } from '../../components';
 
-
-const EnergyConsumption:React.FC = (): JSX.Element => {
-  const { currentEnergyConsumption } = useContext(EnergyContext)
-
+const MoneyPanel:React.FC = (): JSX.Element => {
+  const { currentMoneyConsumption } = useContext(EnergyContext)
+  
   const [stipulatedConsumption, setStipulatedConsumption] = useState(150)
   const [inputStipulatedConsumption, setInputStipulatedConsumption] = useState(stipulatedConsumption)
   const [keyboardStatus, setKeyboardStatus] =  useState<boolean>(false)
-
+  ;
+  
   const heigthFooterAnimated = useRef(new Animated.Value(0)).current
   const opacityHeaderAnimated = useRef(new Animated.Value(0)).current
   const isScreenIsFocused = useIsFocused()
-
+  
   useEffect(() => {
 
-    if(stipulatedConsumption !== inputStipulatedConsumption){
-      setInputStipulatedConsumption(stipulatedConsumption)
+      if(stipulatedConsumption !== inputStipulatedConsumption){
+        setInputStipulatedConsumption(stipulatedConsumption)
+      }
+    
+    if(isScreenIsFocused){
+      onAnimationFooter(1,1)
+    }else {
+      onAnimationFooter(0,0)
     }
-  
-  if(isScreenIsFocused){
-    onAnimationFooter(1,1)
-  }else {
-    onAnimationFooter(0,0)
-  }
 
-  const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-    setKeyboardStatus(!keyboardStatus);
-  });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(!keyboardStatus);
+    });
 
-  return () => {
-    hideSubscription.remove();
-  }
+    return () => {
+      hideSubscription.remove();
+    }
 
-},[isScreenIsFocused, keyboardStatus])
+  },[isScreenIsFocused, keyboardStatus])
 
   function onAnimationFooter(valueHeightFooter: number, valueOpacityHeader: number){
 
@@ -66,8 +66,8 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
         useNativeDriver:false
       })
     ]).start()
-  }
-  
+  }  
+
   async function onUpdateMaxConsumption(event) {
     if(!event.nativeEvent.text) return
     setStipulatedConsumption(event.nativeEvent.text)
@@ -88,14 +88,14 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
     <Container>
       <Header style={{opacity:opacityHeader}}>
         <Title size={22}>Consumo atual</Title>
-        <Title bold={true} size={40}>KW/H {currentEnergyConsumption}</Title>
+        <Title bold={true} size={50}>R$ {currentMoneyConsumption}</Title>
       </Header>
       <Footer style={{maxHeight:maxHeightFooter}}>
         <HeaderFooter style={{opacity:opacityHeader}}>
         <ContainerInput>
           <Title size={14}>Valor estipulado para o mes</Title>
           <BoxInput>
-            <Title bold={true} size={35}>KW</Title>
+            <Title bold={true} size={35}>R$</Title>
             <InputStipulatedValue
               onSubmitEditing={(event) => onUpdateMaxConsumption(event)}
               bold={true} size={35} 
@@ -103,17 +103,17 @@ const EnergyConsumption:React.FC = (): JSX.Element => {
               onChangeText={(value) => setInputStipulatedConsumption(value?.replace(/[^\w\s]/gi, ''))}
               />
           </BoxInput>
-          <RenderConditional isTrue={currentEnergyConsumption > stipulatedConsumption}>
+          <RenderConditional isTrue={currentMoneyConsumption > stipulatedConsumption}>
               <Title color='red' size={16}>Voce ultrapassou o valor meta</Title> 
           </RenderConditional>
         </ContainerInput>
         </HeaderFooter>
         <FooterFooter>
-          <CircularProgress value={currentEnergyConsumption} max={stipulatedConsumption}/>
+          <CircularProgress value={currentMoneyConsumption} max={stipulatedConsumption}/>
         </FooterFooter>
       </Footer>
     </Container>
   )
 }
 
-export default EnergyConsumption
+export default MoneyPanel
