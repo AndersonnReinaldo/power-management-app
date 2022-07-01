@@ -1,12 +1,14 @@
-import React from "react";
+import React,{ useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import Stack from "./Stack"
+import SignInRoutes from "./Stack/signIn.routes"
 import AuthRoutes from './auth.routes'
+import { EnergyContext } from "../context/EnergyProvider";
 
 export default function() {
+    const { isLogged } = useContext(EnergyContext)
     return(
         <NavigationContainer>
-            <AuthRoutes/>
+            {isLogged ? <AuthRoutes/> : <SignInRoutes/>} 
         </NavigationContainer>
     )
 }
